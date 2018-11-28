@@ -139,6 +139,6 @@ rstMACC <= '1' when state = pause else
     '0' when state = nextCol else --Don't Care
     '0' when state = nextRow;     --Don't Care
     
-not_done <= '1' when Cadrs < h*n else '0';
+not_done <= '0' when Cadrs >= h*n-1 else '1';
 
 end Behavioral;

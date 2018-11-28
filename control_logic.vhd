@@ -98,6 +98,8 @@ port map (
     mcnt => mcnt,
     ncnt => ncnt,
     hcnt => hcnt,
+    nxt => nxt,
+    rst => rst,
     Aadrs => Aadrs,
     Badrs => Badrs,
     Cadrs => Cint);

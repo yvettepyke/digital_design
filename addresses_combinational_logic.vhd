@@ -15,11 +15,13 @@ entity addresses_combinational_logic is
     Port ( mcnt : in UNSIGNED (size(m)-1 downto 0); --position within m
            ncnt : in UNSIGNED (size(n)-1 downto 0); --position within n
            hcnt : in UNSIGNED (size(h)-1 downto 0); --position within h
+           nxt : in std_logic;
+           rst : in std_logic;
            Aadrs : out UNSIGNED (log2(h*m)-1 downto 0);
             --address for coefficient at position h,m in matrix A
            Badrs : out UNSIGNED (log2(m*n)-1 downto 0);
             --address for coefficient at position m,n in matrix B
-           Cadrs : out UNSIGNED (log2(h*n)-1 downto 0));
+           Cadrs : inout UNSIGNED (log2(h*n)-1 downto 0));
             --address for coefficient at position h,n in matrix C
            
 end addresses_combinational_logic;
@@ -30,7 +32,10 @@ begin
 
 Aadrs <= resize(m*resize(hcnt, size(m)) + mcnt, log2(h*m));
 Badrs <= resize(resize(mcnt, size(n))*n + ncnt, log2(m*n));
-Cadrs <= resize(n*resize(hcnt, size(n)) + ncnt, log2(h*n));
-
+Cadrs <= resize(n*resize(hcnt, size(n)) + ncnt, log2(h*n)) when nxt = '1' else
+         (others => '0') when rst = '1' else
+         Cadrs; --does not advance C address 
+                -- until the "next" button is pressed
+ 
 
 end Behavioral;
